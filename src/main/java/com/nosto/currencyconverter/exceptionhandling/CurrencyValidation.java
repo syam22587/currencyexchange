@@ -1,4 +1,4 @@
-package com.nosto.currencyconverter.exception;
+package com.nosto.currencyconverter.exceptionhandling;
 
 import java.util.Objects;
 
@@ -16,7 +16,7 @@ import com.nosto.currencyconverter.service.CurrencyConverterService;
  */
 
 @Component
-public class CountryExistingValidation implements ConstraintValidator<CountryExisting, String> {
+public class CurrencyValidation implements ConstraintValidator<CurrencyValidator, String> {
 
 	/**
 	 * 
@@ -33,7 +33,7 @@ public class CountryExistingValidation implements ConstraintValidator<CountryExi
 	@Override
 	public boolean isValid(String currency, ConstraintValidatorContext context) {
 		// TODO Auto-generated method stub
-		return Objects.isNull(currency) || currencyService.isCurrencyExist(currency);
+		return Objects.isNull(currency) || currencyService.isCurrencyExist(currency.toUpperCase());
 	}
 
 }

@@ -82,6 +82,12 @@
 			<scope>provided</scope>
 		</dependency>
 
+		<!-- To carry Java 8 data and time classes to JSON format -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.datatype</groupId>
+			<artifactId>jackson-datatype-jsr310</artifactId>
+		</dependency>
+
 	</dependencies>
 
 	<build>

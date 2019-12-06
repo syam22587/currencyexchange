@@ -1,7 +1,5 @@
 package com.nosto.currencyconverter.controller;
 
-import javax.validation.constraints.NotNull;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +9,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.nosto.currencyconverter.exception.CountryExisting;
+import com.nosto.currencyconverter.dto.ConverterDto;
+import com.nosto.currencyconverter.exceptionhandling.CurrencyValidator;
 import com.nosto.currencyconverter.service.CurrencyConverterService;
 
 /**
@@ -29,7 +28,7 @@ public class CurrencyConverterController {
 	 * converterService
 	 */
 	@Autowired
-	CurrencyConverterService converterService;
+	CurrencyConverterService converterService; 
 
 	/**
 	 * @param source
@@ -38,11 +37,11 @@ public class CurrencyConverterController {
 	 * @return
 	 */
 	@GetMapping(value = "/converter/{source}/{target}/{number}")
-	public String convertCurrency(@PathVariable("source") @CountryExisting String source,
-			@PathVariable("target") @CountryExisting String target, @PathVariable("number") Double number) {
+	public ConverterDto convertCurrency(@PathVariable("source") @CurrencyValidator String source,
+			@PathVariable("target") @CurrencyValidator String target, @PathVariable("number") Double number) {
 
 		// String val = "?qretbase=" + source + "&symbols=" + target + "&num=" + number;
-		String val = converterService.convertService(source, target, number);
+		ConverterDto val = converterService.convertService(source.toUpperCase(), target.toUpperCase(), number);
 
 		return val;
 

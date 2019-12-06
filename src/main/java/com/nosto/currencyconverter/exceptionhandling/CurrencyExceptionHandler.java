@@ -1,4 +1,4 @@
-package com.nosto.currencyconverter.exception;
+package com.nosto.currencyconverter.exceptionhandling;
 
 import javax.validation.ConstraintViolationException;
 
@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import com.nosto.currencyconverter.dto.ResponseDTO;
 
@@ -14,17 +15,16 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @ControllerAdvice
-public class CurrencyExceptionHandler {
+public class CurrencyExceptionHandler extends ResponseEntityExceptionHandler {
 
 	@ExceptionHandler(ConstraintViolationException.class)
 	public final ResponseEntity<Object> handleConstrainViolationException(Exception ex, WebRequest request) {
-		
-		log.error(ex.getMessage(), ex);
-		
+
+		// log.error(ex.getMessage(), ex);
+
 		System.out.println("Reached here....");
 
-		ResponseDTO dto = ResponseDTO.builder()
-				.message(ex.getMessage()).build();
+		ResponseDTO dto = ResponseDTO.builder().message(ex.getMessage()).build();
 
 		return ResponseEntity.badRequest().body(dto);
 

@@ -1,4 +1,4 @@
-package com.nosto.currencyconverter.exception;
+package com.nosto.currencyconverter.exceptionhandling;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -12,10 +12,10 @@ import javax.validation.Payload;
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ ElementType.FIELD, ElementType.PARAMETER })
-@Constraint(validatedBy = CountryExistingValidation.class)
-public @interface CountryExisting {
+@Constraint(validatedBy = CurrencyValidation.class)
+public @interface CurrencyValidator {
 
-	String message() default "{CountryExisting}";
+	String message() default "{CurrencyValidator}";
 
 	Class<?>[] groups() default {};
 
