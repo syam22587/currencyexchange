@@ -1,4 +1,4 @@
-package com.nosto.currencyconverter.exceptionhandling;
+package com.nosto.currencyconverter.validation;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;

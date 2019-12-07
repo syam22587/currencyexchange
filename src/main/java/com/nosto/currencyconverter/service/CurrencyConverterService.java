@@ -1,10 +1,10 @@
 package com.nosto.currencyconverter.service;
 
-import com.nosto.currencyconverter.dto.ConverterDto;
+import com.nosto.currencyconverter.dto.SendingResponseDTO;
 
 public interface CurrencyConverterService {
 
-	public ConverterDto convertService(String source, String target, Double number ) ;
+	public SendingResponseDTO convertService(String source, String target, Double number ) ;
 
 	public boolean isCurrencyExist(String currency); 
 	

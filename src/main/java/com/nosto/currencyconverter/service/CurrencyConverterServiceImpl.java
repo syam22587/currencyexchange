@@ -15,12 +15,15 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import com.nosto.currencyconverter.dto.ConverterDto;
+import com.nosto.currencyconverter.dto.ReceivedResponse;
+import com.nosto.currencyconverter.dto.SendingResponseDTO;
+import com.nosto.currencyconverter.utils.NumberFormatter;
 
 /**
  * @author lenovo
  *
  */
+
 @Service
 @CacheConfig(cacheNames = { "currencyinfo" })
 public class CurrencyConverterServiceImpl implements CurrencyConverterService {
@@ -37,13 +40,16 @@ public class CurrencyConverterServiceImpl implements CurrencyConverterService {
 	String baseCurrency;
 
 	/**
-	 * restTemplate is used a bridge to consume external API 'exchangeratesapi'
+	 * restTemplate is used as a bridge to consume external API 'exchangeratesapi'
 	 * 
 	 * @see <a href="https://exchangeratesapi.io/">https://exchangeratesapi.io/</a>
 	 *      for more information about external API details
 	 */
 	@Autowired
 	RestTemplate restTemplate;
+
+	@Autowired
+	NumberFormatter numberFormatter;
 
 	/**
 	 * Static entity reference is used to get headers which are further used across
@@ -57,23 +63,55 @@ public class CurrencyConverterServiceImpl implements CurrencyConverterService {
 		entity = new HttpEntity<String>(headers);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.nosto.currencyconverter.service.CurrencyConverterService#convertService(
+	 * java.lang.String, java.lang.String, java.lang.Double)
+	 */
 	@Override
 	@Cacheable
-	public ConverterDto convertService(String source, String target, Double number) {
+	public SendingResponseDTO convertService(String source, String target, Double number) {
 
-		log.info(" Source Currency : " + source + ", Target Currency : " + target + ", Amount to convert : " + number);
+		/*
+		 * Below gets the response from External API.
+		 */
+		ReceivedResponse response = getCurrencyDetailsFromApi(source, target);
 
-		String actualUrl = apiUrl + "?base=" + source + "&symbols=" + target;
+		double currentPrice = response.getRates().get(target).asDouble();
+		
+		
 
-		ConverterDto response = restTemplate.exchange(actualUrl, HttpMethod.GET, entity, ConverterDto.class).getBody();
+		SendingResponseDTO dto = new SendingResponseDTO();
 
-		double price = response.getRates().get(target).asDouble();
+		double total = currentPrice * number;
 
-		log.info("Total price =  " + price * number);
+		log.info("**** BEfore--- " + total + " --- *** ");
+		log.info("**** AFter--- " + numberFormatter.convertNumberToCurrency(total, target.substring(0, 2)));
+		dto.setNumber(number);
+		dto.setTotal(total);
+		dto.setSource(source);
+		dto.setTarget(target);
+
+		log.info("Total price =  " + total);
 		log.info("asdfr " + response.toString());
 
-		return response;
+		return dto;
 
+	}
+
+	/**
+	 * @param actualUrl
+	 * @return
+	 */
+	@Cacheable
+	private ReceivedResponse getCurrencyDetailsFromApi(String source, String target) {
+		String actualUrl = apiUrl + "?base=" + source + "&symbols=" + target;
+		log.info("Url for external api consumption is : " + actualUrl);
+		ReceivedResponse response = restTemplate.exchange(actualUrl, HttpMethod.GET, entity, ReceivedResponse.class)
+				.getBody();
+		return response;
 	}
 
 	/*
@@ -90,7 +128,6 @@ public class CurrencyConverterServiceImpl implements CurrencyConverterService {
 		/*
 		 * Since our exchange API provides base currency as EUR
 		 */
-
 		if (currency.equals(baseCurrency))
 			return true;
 
@@ -98,7 +135,8 @@ public class CurrencyConverterServiceImpl implements CurrencyConverterService {
 		 * Anything other than base currency will be checked remotely.
 		 */
 
-		ConverterDto response = restTemplate.exchange(apiUrl, HttpMethod.GET, entity, ConverterDto.class).getBody();
+		ReceivedResponse response = restTemplate.exchange(apiUrl, HttpMethod.GET, entity, ReceivedResponse.class)
+				.getBody();
 
 		log.info("Status of '" + currency + "'  ************  " + response.getRates().has(currency));
 
