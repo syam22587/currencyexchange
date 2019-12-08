@@ -18,6 +18,10 @@ import com.nosto.currencyconverter.service.CurrencyConverterService;
 @Component
 public class CurrencyValidation implements ConstraintValidator<CurrencyValidator, String> {
 
+	@Override
+	public void initialize(CurrencyValidator constraint) {
+	}
+
 	/**
 	 * 
 	 */

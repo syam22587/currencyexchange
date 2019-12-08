@@ -59,6 +59,7 @@ public class CurrencyConverterServiceImpl implements CurrencyConverterService {
 
 	static {
 		HttpHeaders headers = new HttpHeaders();
+		 
 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
 		entity = new HttpEntity<String>(headers);
 	}
@@ -80,17 +81,15 @@ public class CurrencyConverterServiceImpl implements CurrencyConverterService {
 		ReceivedResponse response = getCurrencyDetailsFromApi(source, target);
 
 		double currentPrice = response.getRates().get(target).asDouble();
-		
-		
 
 		SendingResponseDTO dto = new SendingResponseDTO();
 
 		double total = currentPrice * number;
 
 		log.info("**** BEfore--- " + total + " --- *** ");
-		log.info("**** AFter--- " + numberFormatter.convertNumberToCurrency(total, target.substring(0, 2)));
+		String formattedTotal =  numberFormatter.convertNumberToCurrency(total, target.substring(0, 2));
 		dto.setNumber(number);
-		dto.setTotal(total);
+		dto.setTotal(formattedTotal);
 		dto.setSource(source);
 		dto.setTarget(target);
 

@@ -15,9 +15,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nosto.currencyconverter.dto.SendingResponseDTO;
+import com.nosto.currencyconverter.exceptionhandling.InputsShouldNotBeSameException;
 import com.nosto.currencyconverter.exceptionhandling.NotFoundException;
 import com.nosto.currencyconverter.service.CurrencyConverterService;
 import com.nosto.currencyconverter.validation.CurrencyValidator;
+
+import io.github.sercasti.tracing.Traceable;
 
 /**
  * @author lenovo
@@ -37,19 +40,37 @@ public class CurrencyConverterController {
 	CurrencyConverterService converterService;
 
 	/**
-	 * @param source
-	 * @param target
-	 * @param number
-	 * @return
+	 * @param source - Source Currency
+	 * @param target - Target Currency
+	 * @param number - Number of Source currency to be converted
+	 * @return A response entity of type <SendingResponseDTO>
 	 * @throws NotFoundException
+	 * @throws InputsShouldNotBeSameException
+	 * 
+	 * @Traceable is a Server Timing support project. @see <a href=
+	 *            "https://github.com/sercasti/spring-httpserver-timings">This</a>
+	 *            for more information.
 	 */
 	@GetMapping(value = "/converter/{source}/{target}/{number}")
+	// public ResponseEntity<SendingResponseDTO> convertCurrency(@Valid TestDTO dto,
+	// Model model) throws NotFoundException {
+
+	@Traceable
 	public ResponseEntity<SendingResponseDTO> convertCurrency(
 			@PathVariable("source") @CurrencyValidator @Pattern(regexp = "[a-zA-Z]{3}") @NotBlank @Size(min = 3) String source,
 			@PathVariable("target") @CurrencyValidator @Pattern(regexp = "[a-zA-Z]{3}") @NotBlank @Size(min = 3) String target,
-			@PathVariable("number") Double number) throws NotFoundException {
+			@PathVariable("number") Double number) throws NotFoundException, InputsShouldNotBeSameException {
 
-		if (!converterService.isCurrencyExist(source) || !converterService.isCurrencyExist(target)) {
+		/*
+		 * This condition is wrote in conjunction to check if two inputs are same
+		 */
+
+		if (source.equals(target)) {
+			throw new InputsShouldNotBeSameException("1.Source Currency and Target currency should not be same ");
+		}
+
+		if (!converterService.isCurrencyExist(source.toUpperCase())
+				|| !converterService.isCurrencyExist(target.toUpperCase())) {
 			throw new NotFoundException(" Entered currency format is not supported or does not exist. Try again. ");
 		}
 

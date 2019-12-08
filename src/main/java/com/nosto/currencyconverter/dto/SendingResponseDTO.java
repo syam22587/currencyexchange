@@ -12,5 +12,7 @@ public class SendingResponseDTO {
 	private String source;
 	private String target;
 	private double number;
-	private double total;
+	private String total;
+
+	 
 }

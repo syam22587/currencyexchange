@@ -7,6 +7,11 @@ import org.springframework.web.client.RestTemplate;
 
 import com.nosto.currencyconverter.utils.NumberFormatter;
 
+import io.github.sercasti.tracing.config.TracingConfig;
+import io.github.sercasti.tracing.core.Tracing;
+import io.github.sercasti.tracing.filter.TracingFilter;
+import io.github.sercasti.tracing.interceptor.TracingInterceptor;
+
 @Configuration
 public class CurrencyConverterConfig {
 
@@ -18,5 +23,20 @@ public class CurrencyConverterConfig {
 	@Bean
 	public NumberFormatter getNumberFormatter() {
 		return new NumberFormatter();
+	}
+
+	@Bean
+	protected Tracing tracing() {
+		return TracingConfig.createTracing();
+	}
+
+	@Bean
+	protected TracingFilter tracingFilter() {
+		return new TracingFilter();
+	}
+
+	@Bean
+	protected TracingInterceptor tracingInterceptor() {
+		return new TracingInterceptor(tracing());
 	}
 }

@@ -35,7 +35,26 @@ public class CurrencyExceptionHandler extends ResponseEntityExceptionHandler {
 
 		ErrorMessage em = new ErrorMessage();
 		em.setStatus(HttpStatus.BAD_REQUEST);
-		em.setMessage("There found a bad request :( ");
+		em.setMessage("There found invalid inputs :( ");
+		em.setErrorMessage(ex.getLocalizedMessage());
+
+		return ResponseEntity.badRequest().body(em);
+
+	}
+
+	/**
+	 * @param ex
+	 * @param request
+	 * @return
+	 */
+	@ExceptionHandler(InputsShouldNotBeSameException.class)
+	public final ResponseEntity<ErrorMessage> handleInputsShouldNotBeSameException(Exception ex, WebRequest request) {
+
+		log.error("************ error reached **************");
+
+		ErrorMessage em = new ErrorMessage();
+		em.setStatus(HttpStatus.BAD_REQUEST);
+		em.setMessage("2. There found two inputs are same. ");
 		em.setErrorMessage(ex.getLocalizedMessage());
 
 		return ResponseEntity.badRequest().body(em);
