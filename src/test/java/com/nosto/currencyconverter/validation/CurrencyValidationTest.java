@@ -21,7 +21,7 @@ public class CurrencyValidationTest {
 	@Mock
 	CurrencyConverterService cs ; 
 	 
-    @BeforeAll
+/*    @BeforeAll
     public void setUp() throws Exception {
         ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
         validator = validatorFactory.getValidator();
@@ -33,7 +33,7 @@ public class CurrencyValidationTest {
     	when(cs.isCurrencyExist(currency)).thenReturn(true); 
     //	Set<ConstraintViolation> violations = validator.validate(form);
     	 
-    }
+    }*/
     
     
     /*
