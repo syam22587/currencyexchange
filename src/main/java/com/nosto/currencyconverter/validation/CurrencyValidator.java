@@ -9,6 +9,11 @@ import java.lang.annotation.Target;
 import javax.validation.Constraint;
 import javax.validation.Payload;
 
+/**
+ * @author SyamVoleti
+ *
+ */
+
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ ElementType.FIELD, ElementType.PARAMETER })
@@ -20,4 +25,5 @@ public @interface CurrencyValidator {
 	Class<?>[] groups() default {};
 
 	Class<? extends Payload>[] payload() default {};
+
 }

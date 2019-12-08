@@ -5,6 +5,7 @@ import javax.validation.ConstraintViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.web.firewall.RequestRejectedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -12,6 +13,8 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+
+import com.nosto.currencyconverter.dto.ErrorMessage;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -24,44 +27,42 @@ import lombok.extern.slf4j.Slf4j;
 public class CurrencyExceptionHandler extends ResponseEntityExceptionHandler {
 
 	/**
+	 * This exception will be raised if any ConstraintViolationException occurs
+	 * 
 	 * @param ex
 	 * @param request
 	 * @return
 	 */
 	@ExceptionHandler(ConstraintViolationException.class)
 	public final ResponseEntity<ErrorMessage> handleConstrainViolationException(Exception ex, WebRequest request) {
-
-		log.error("************ error reached **************");
-
+		log.error("ConstraintViolationException Exception Caught ");
 		ErrorMessage em = new ErrorMessage();
 		em.setStatus(HttpStatus.BAD_REQUEST);
 		em.setMessage("There found invalid inputs :( ");
 		em.setErrorMessage(ex.getLocalizedMessage());
-
 		return ResponseEntity.badRequest().body(em);
-
 	}
 
 	/**
+	 * This will be caught if both Source and target inputs are supplied are same
+	 * 
 	 * @param ex
 	 * @param request
 	 * @return
 	 */
 	@ExceptionHandler(InputsShouldNotBeSameException.class)
 	public final ResponseEntity<ErrorMessage> handleInputsShouldNotBeSameException(Exception ex, WebRequest request) {
-
-		log.error("************ error reached **************");
-
+		log.error("ConstraintViolationException Exception Caught ");
 		ErrorMessage em = new ErrorMessage();
 		em.setStatus(HttpStatus.BAD_REQUEST);
 		em.setMessage("2. There found two inputs are same. ");
 		em.setErrorMessage(ex.getLocalizedMessage());
-
 		return ResponseEntity.badRequest().body(em);
-
 	}
 
 	/**
+	 * If an Item not found then this exception will be raised.
+	 * 
 	 * @param ex
 	 * @return
 	 */
@@ -77,6 +78,9 @@ public class CurrencyExceptionHandler extends ResponseEntityExceptionHandler {
 	}
 
 	/**
+	 * MethodArgumentTypeMismatchException occurs when an expected input format
+	 * doesn't found
+	 * 
 	 * @param ex
 	 * @param request
 	 * @return
@@ -132,6 +136,21 @@ public class CurrencyExceptionHandler extends ResponseEntityExceptionHandler {
 
 		em.setErrorMessage(ex.getBindingResult().getFieldErrors().toString());
 		// ex.getBindingResult().getFieldErrors() ;
+		return ResponseEntity.badRequest().body(em);
+	}
+
+	/**
+	 * @param ex
+	 * @param request
+	 * @return
+	 */
+	@ExceptionHandler(RequestRejectedException.class)
+	protected ResponseEntity<Object> handleRequestRejectedException(Exception ex, WebRequest request) {
+		ErrorMessage em = new ErrorMessage();
+		em.setStatus(HttpStatus.BAD_GATEWAY);
+		em.setMessage("Invalid / Malformed Request :( ");
+
+		em.setErrorMessage(ex.getMessage());
 		return ResponseEntity.badRequest().body(em);
 	}
 }

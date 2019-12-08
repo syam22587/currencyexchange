@@ -15,11 +15,10 @@ import org.springframework.cache.annotation.EnableCaching;
 public class CurrencyconverterApplication {
 
 	/**
-	 * @param args
+	 * @param args Command Line Arguments
 	 */
 	public static void main(String[] args) {
 		SpringApplication.run(CurrencyconverterApplication.class, args);
 	}
 
-	
 }

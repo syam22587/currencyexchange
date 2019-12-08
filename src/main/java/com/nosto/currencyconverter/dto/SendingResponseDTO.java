@@ -9,10 +9,19 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class SendingResponseDTO {
 
-	private String source;
-	private String target;
-	private double number;
-	private String total;
+	/**
+	 * Getters, setters and other constructors are loaded by @Data annotation
+	 * provided by Lombok jar
+	 * 
+	 * @see <a href="https://projectlombok.org/">Project Lombok</a> for more
+	 *      information.
+	 * 
+	 */
 
-	 
+	private String sourceCurrency;
+	private String targetCurrency;
+	private double TargetCurrencyValue;
+	private double number;
+	private String totalValue;
+
 }

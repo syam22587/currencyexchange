@@ -8,10 +8,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * @author SyamVoleti
- * 
- *         This DTO is responsible for receiving the response from Exchange API
- *
+ * @author SyamVoleti -> This DTO is responsible for receiving the response from
+ *         Exchange API
  */
 @Data
 @AllArgsConstructor

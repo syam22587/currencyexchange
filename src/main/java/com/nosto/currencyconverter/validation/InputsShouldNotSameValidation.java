@@ -8,6 +8,10 @@ import org.apache.logging.log4j.Logger;
 
 import com.nosto.currencyconverter.dto.TestDTO;
 
+/**
+ * @author SyamVoleti
+ *
+ */
 public class InputsShouldNotSameValidation implements ConstraintValidator<InputsShouldNotSameValidator, TestDTO> {
 
 	private static final Logger LOGGER = LogManager.getLogger(InputsShouldNotSameValidation.class);

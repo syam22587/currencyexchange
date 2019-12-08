@@ -1,4 +1,4 @@
-package com.nosto.currencyconverter.exceptionhandling;
+package com.nosto.currencyconverter.dto;
 
 import java.time.LocalDateTime;
 
@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 /**
- * @author lenovo
+ * @author SyamVoleti
+ * 
+ * ErrorMessage is a Error response DTO used to send to client if an error or exception occurs.
  *
  */
 @Data
@@ -17,11 +19,8 @@ public class ErrorMessage {
 
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
 	private LocalDateTime timestamp;
-
 	private HttpStatus status;
-
 	private String message;
-
 	private String errorMessage;
 
 	/**

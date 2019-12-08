@@ -11,10 +11,9 @@ import org.springframework.stereotype.Component;
 import com.nosto.currencyconverter.service.CurrencyConverterService;
 
 /**
- * @author lenovo
+ * @author SyamVoleti
  *
  */
-
 @Component
 public class CurrencyValidation implements ConstraintValidator<CurrencyValidator, String> {
 
@@ -22,9 +21,6 @@ public class CurrencyValidation implements ConstraintValidator<CurrencyValidator
 	public void initialize(CurrencyValidator constraint) {
 	}
 
-	/**
-	 * 
-	 */
 	@Autowired
 	CurrencyConverterService currencyService;
 

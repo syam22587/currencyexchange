@@ -9,9 +9,13 @@ import java.lang.annotation.Target;
 import javax.validation.Constraint;
 import javax.validation.Payload;
 
+/**
+ * @author lenovo
+ *
+ */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ ElementType.FIELD, ElementType.PARAMETER})
+@Target({ ElementType.FIELD, ElementType.PARAMETER })
 @Constraint(validatedBy = InputsShouldNotSameValidation.class)
 public @interface InputsShouldNotSameValidator {
 	String message() default "Source and Target should not be same. ";
@@ -19,5 +23,4 @@ public @interface InputsShouldNotSameValidator {
 	Class<?>[] groups() default {};
 
 	Class<? extends Payload>[] payload() default {};
-
 }

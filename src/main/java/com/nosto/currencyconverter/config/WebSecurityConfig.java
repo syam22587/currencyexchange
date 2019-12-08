@@ -7,18 +7,24 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.web.header.writers.StaticHeadersWriter;
 
 /**
- * @author lenovo This class is used to enhance web security
+ * @author SyamKumar
+ * 
+ * This class is used to enhance web security
  */
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.springframework.security.config.annotation.web.configuration.
+	 * WebSecurityConfigurerAdapter#configure(org.springframework.security.config.
+	 * annotation.web.builders.HttpSecurity)
+	 */
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-	//	super.configure(http);
-
 		http.headers().addHeaderWriter(new StaticHeadersWriter("X-Content-Security-Policy", "script-src 'self'"));
-
 	}
 
 }
