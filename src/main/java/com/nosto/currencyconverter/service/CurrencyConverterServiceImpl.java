@@ -89,8 +89,14 @@ public class CurrencyConverterServiceImpl implements CurrencyConverterService {
 		double total = currentPrice * number;
 
 		log.info("Total value before the Number format conversion " + total);
-		String formattedTotal = numberFormatter.convertNumberToCurrency(total, target.substring(0, 2));
-		log.info("Total value after the Number format conversion " + formattedTotal);
+		String formattedTotal = null;
+		try {
+			formattedTotal = numberFormatter.convertNumberToCurrency(total, target.substring(0, 2));
+			log.info("Total value after the Number format conversion " + formattedTotal);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		dto.setSourceCurrency(source);
 		dto.setTargetCurrency(target);
@@ -98,7 +104,6 @@ public class CurrencyConverterServiceImpl implements CurrencyConverterService {
 		dto.setNumber(number);
 		dto.setTotalValue(formattedTotal);
 
-		log.info("Total price =  " + total);
 		log.info("DTO Response  " + response.toString());
 
 		return dto;

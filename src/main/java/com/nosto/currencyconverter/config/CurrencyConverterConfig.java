@@ -1,8 +1,12 @@
 package com.nosto.currencyconverter.config;
 
+import javax.validation.Validator;
+
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
+import org.springframework.validation.beanvalidation.MethodValidationPostProcessor;
 import org.springframework.web.client.RestTemplate;
 
 import com.nosto.currencyconverter.utils.NumberFormatter;
@@ -61,4 +65,5 @@ public class CurrencyConverterConfig {
 	protected TracingInterceptor tracingInterceptor() {
 		return new TracingInterceptor(tracing());
 	}
+
 }

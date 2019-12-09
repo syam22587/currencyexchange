@@ -9,6 +9,7 @@ import org.springframework.security.web.firewall.RequestRejectedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.NoHandlerFoundException;
@@ -38,7 +39,7 @@ public class CurrencyExceptionHandler extends ResponseEntityExceptionHandler {
 		log.error("ConstraintViolationException Exception Caught ");
 		ErrorMessage em = new ErrorMessage();
 		em.setStatus(HttpStatus.BAD_REQUEST);
-		em.setMessage("There found invalid inputs :( ");
+		em.setMessage(" Currency is invlaid or this doesnt supported in our system yet :( ");
 		em.setErrorMessage(ex.getLocalizedMessage());
 		return ResponseEntity.badRequest().body(em);
 	}
@@ -54,7 +55,7 @@ public class CurrencyExceptionHandler extends ResponseEntityExceptionHandler {
 	public final ResponseEntity<ErrorMessage> handleInputsShouldNotBeSameException(Exception ex, WebRequest request) {
 		log.error("ConstraintViolationException Exception Caught ");
 		ErrorMessage em = new ErrorMessage();
-		em.setStatus(HttpStatus.BAD_REQUEST);
+		em.setStatus(HttpStatus.NOT_FOUND);
 		em.setMessage("2. There found two inputs are same. ");
 		em.setErrorMessage(ex.getLocalizedMessage());
 		return ResponseEntity.badRequest().body(em);
@@ -133,7 +134,6 @@ public class CurrencyExceptionHandler extends ResponseEntityExceptionHandler {
 		ErrorMessage em = new ErrorMessage();
 		em.setStatus(HttpStatus.BAD_GATEWAY);
 		em.setMessage("Validation error");
-
 		em.setErrorMessage(ex.getBindingResult().getFieldErrors().toString());
 		// ex.getBindingResult().getFieldErrors() ;
 		return ResponseEntity.badRequest().body(em);
@@ -142,14 +142,25 @@ public class CurrencyExceptionHandler extends ResponseEntityExceptionHandler {
 	/**
 	 * @param ex
 	 * @param request
-	 * @return
+	 * @return 
 	 */
 	@ExceptionHandler(RequestRejectedException.class)
-	protected ResponseEntity<Object> handleRequestRejectedException(RequestRejectedException ex, WebRequest request) {
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	protected ResponseEntity<Object> handleRequestRejectedException(Exception ex, WebRequest request) {
 		ErrorMessage em = new ErrorMessage();
-		em.setStatus(HttpStatus.BAD_GATEWAY);
+		em.setStatus(HttpStatus.BAD_REQUEST);
 		em.setMessage("Invalid / Malformed Request :( ");
 		em.setErrorMessage(ex.getMessage());
 		return ResponseEntity.badRequest().body(em);
 	}
+	
+	@ExceptionHandler(RuntimeException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<Object> processRuntimeException(RuntimeException ex) {
+        ErrorMessage em = new ErrorMessage();
+		em.setStatus(HttpStatus.BAD_REQUEST);
+		em.setMessage("Invalid / Malformed Request :( :(  ");
+		em.setErrorMessage(ex.getMessage());
+		return ResponseEntity.badRequest().body(em);
+    }
 }

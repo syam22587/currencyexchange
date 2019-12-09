@@ -32,7 +32,6 @@ public class CurrencyValidation implements ConstraintValidator<CurrencyValidator
 	 */
 	@Override
 	public boolean isValid(String currency, ConstraintValidatorContext context) {
-		// TODO Auto-generated method stub
 		return Objects.isNull(currency) || currencyService.isCurrencyExist(currency.toUpperCase());
 	}
 
