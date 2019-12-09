@@ -145,11 +145,10 @@ public class CurrencyExceptionHandler extends ResponseEntityExceptionHandler {
 	 * @return
 	 */
 	@ExceptionHandler(RequestRejectedException.class)
-	protected ResponseEntity<Object> handleRequestRejectedException(Exception ex, WebRequest request) {
+	protected ResponseEntity<Object> handleRequestRejectedException(RequestRejectedException ex, WebRequest request) {
 		ErrorMessage em = new ErrorMessage();
 		em.setStatus(HttpStatus.BAD_GATEWAY);
 		em.setMessage("Invalid / Malformed Request :( ");
-
 		em.setErrorMessage(ex.getMessage());
 		return ResponseEntity.badRequest().body(em);
 	}

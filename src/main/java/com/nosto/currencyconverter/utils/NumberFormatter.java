@@ -14,7 +14,11 @@ public class NumberFormatter {
 	 * @param currency
 	 * @return
 	 */
-	public String convertNumberToCurrency(double number, String currency) {
+	public String convertNumberToCurrency(double number, String currency) throws Exception {
+
+		if (Double.isNaN(number) || currency == null || currency.isEmpty()) {
+			throw new Exception("Invalid inputs found during conversion ");
+		}
 		NumberFormat nf = NumberFormat.getCurrencyInstance(new Locale("en", currency));
 		String output = nf.format(number);
 		System.out.println("Currency in Canada : " + output);

@@ -7,11 +7,13 @@ import javax.validation.constraints.Size;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nosto.currencyconverter.dto.SendingResponseDTO;
@@ -52,7 +54,7 @@ public class CurrencyConverterController {
 	 *            "https://github.com/sercasti/spring-httpserver-timings">This</a>
 	 *            for more information.
 	 */
-
+ 
 	@Traceable
 	@GetMapping(value = "/converter/{source}/{target}/{number}")
 	public ResponseEntity<SendingResponseDTO> convertCurrency(
@@ -63,6 +65,8 @@ public class CurrencyConverterController {
 		/*
 		 * This if condition is written in conjunction to check if two inputs are same.
 		 */
+		
+		LOGGER.info("skskskskskssksks") ; 
 		if (source.equals(target)) {
 			throw new InputsShouldNotBeSameException(
 					" Source Currency and Target currency should not be same for the conversion.");
@@ -74,6 +78,8 @@ public class CurrencyConverterController {
 		}*/
 
 		SendingResponseDTO val = converterService.convertService(source.toUpperCase(), target.toUpperCase(), number);
+		
+		LOGGER.info("sadfasdfasfasdf" + val) ; 
 
 		return ResponseEntity.ok().body(val);
 

@@ -5,6 +5,7 @@ import java.util.Arrays;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.Cacheable;
@@ -26,6 +27,7 @@ import com.nosto.currencyconverter.utils.NumberFormatter;
 
 @Service
 @CacheConfig(cacheNames = { "currencyinfo" })
+@Qualifier("currencyConverterService")
 public class CurrencyConverterServiceImpl implements CurrencyConverterService {
 
 	private static final Logger log = LogManager.getLogger(CurrencyConverterServiceImpl.class);
